@@ -2,7 +2,7 @@
 import streamlit as st
 import pandas as pd
 
-df = pd.read_csv(r'C:\Users\Sanskar\Downloads\Spacedata.csv')
+df = pd.read_csv('https://raw.githubusercontent.com/SanskarJadhav/space/main/Spacedata.csv')
 
 tk = 0
 
