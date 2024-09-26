@@ -15,6 +15,8 @@ from deepface import DeepFace
 from PIL import Image
 import os
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+
 # Title of the Streamlit App
 st.title("Face Verification with DeepFace")
 
