@@ -87,4 +87,5 @@ if img1 and img2:
                 st.error("Image paths not found in the database.")
         except ValueError as e:
             st.error("Spoofing detected!")
+            st.error(e)
 
