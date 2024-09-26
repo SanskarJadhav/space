@@ -11,6 +11,7 @@
 #     print("Spoofing detected")
 
 import streamlit as st
+import numpy as np
 from deepface import DeepFace
 from PIL import Image
 import os
@@ -60,8 +61,8 @@ if img1 and img2:
     img1_bytes = img1.read()
     img2_bytes = img2.read()
 
-    image1 = Image.open(io.BytesIO(img1_bytes))
-    image2 = Image.open(io.BytesIO(img2_bytes))
+    image1 = np.array(Image.open(img1_bytes))
+    image2 = np.array(Image.open(img2_bytes))
     
     try:
         if img1_bytes and img2_bytes:
