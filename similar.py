@@ -59,6 +59,8 @@ img2 = st.file_uploader("Upload Second Image", type=["jpg", "jpeg", "png"])
 if img1 and img2:
     # Convert the BytesIO objects back to bytes
 
+    img1pil = Image.open(img1)
+    img2pil = Image.open(img2)
     image1 = np.array(Image.open(img1))
     image2 = np.array(Image.open(img2))
     
@@ -66,8 +68,8 @@ if img1 and img2:
         if image1 and image2:
             # Perform face verification using DeepFace
             result = DeepFace.verify(
-                img1_path=image1,
-                img2_path=image2,
+                img1_path=img1pil,
+                img2_path=img2pil,
                 enforce_detection=False,  # Skip face detection if necessary
                 anti_spoofing=True        # Enable anti-spoofing
             )
