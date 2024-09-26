@@ -1,3 +1,4 @@
 streamlit-mic-recorder
-opencv-python
+Pillow
 deepface
+opencv-python-headless
