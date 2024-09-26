@@ -56,17 +56,6 @@ img2 = st.file_uploader("Upload Second Image", type=["jpg", "jpeg", "png"])
 
 # When both images are uploaded, process them
 if img1 and img2:
-    # Load the uploaded images into memory as PIL images
-    img1_pil = Image.open(img1)
-    img2_pil = Image.open(img2)
-
-    # Convert PIL images to bytes for DeepFace processing
-    img1_bytes = io.BytesIO()
-    img2_bytes = io.BytesIO()
-
-    img1_pil.save(img1_bytes, format=img1_pil.format)
-    img2_pil.save(img2_bytes, format=img2_pil.format)
-
     # Convert the BytesIO objects back to bytes
     img1_bytes = img1.read()
     img2_bytes = img2.read()
