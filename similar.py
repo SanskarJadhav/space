@@ -56,21 +56,22 @@ def get_image_path(img_name):
 # When both images are uploaded, process them
 if img1 and img2:
     # Save the images and insert paths into the SQLite database
-    img1_path = save_image(img1, "uploaded_img1.jpg")
-    img2_path = save_image(img2, "uploaded_img2.jpg")
+    # img1_path = save_image(img1, "uploaded_img1.jpg")
+    # img2_path = save_image(img2, "uploaded_img2.jpg")
 
     # Button to trigger face verification
     if st.button("Verify Faces"):
         try:
             # Retrieve image paths from the database
-            img1_db_path = get_image_path(img1.name)
-            img2_db_path = get_image_path(img2.name)
+            # img1_db_path = get_image_path(img1.name)
+            # img2_db_path = get_image_path(img2.name)
 
-            if img1_db_path and img2_db_path:
+            # if img1_db_path and img2_db_path:
+            if img1 and img2:
                 # Perform face verification using DeepFace
                 result = DeepFace.verify(
-                    img1_path=img1_db_path,
-                    img2_path=img2_db_path,
+                    img1_path=img1,
+                    img2_path=img2,
                     enforce_detection=False,  # Skip face detection if necessary
                     anti_spoofing=True        # Enable anti-spoofing
                 )
