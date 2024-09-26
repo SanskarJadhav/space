@@ -67,8 +67,8 @@ if img1 and img2:
     try:
             # Perform face verification using DeepFace
         result = DeepFace.verify(
-            img1_path=img1pil,
-            img2_path=img2pil,
+            img1_path=image1,
+            img2_path=image2,
             enforce_detection=False,  # Skip face detection if necessary
             anti_spoofing=True        # Enable anti-spoofing
         )
