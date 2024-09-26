@@ -2,4 +2,4 @@ streamlit-mic-recorder
 Pillow
 deepface
 opencv-python-headless
-tensorflow-keras
+tf-keras
