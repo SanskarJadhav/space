@@ -14,6 +14,7 @@ import streamlit as st
 from deepface import DeepFace
 from PIL import Image
 import os
+import io
 import sqlite3
 
 # Set TensorFlow log level
