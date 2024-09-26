@@ -58,11 +58,9 @@ img2 = st.file_uploader("Upload Second Image", type=["jpg", "jpeg", "png"])
 # When both images are uploaded, process them
 if img1 and img2:
     # Convert the BytesIO objects back to bytes
-    img1_bytes = img1.read()
-    img2_bytes = img2.read()
 
-    image1 = np.array(Image.open(img1_bytes))
-    image2 = np.array(Image.open(img2_bytes))
+    image1 = np.array(Image.open(img1))
+    image2 = np.array(Image.open(img2))
     
     try:
         if img1_bytes and img2_bytes:
