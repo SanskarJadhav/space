@@ -3,3 +3,4 @@ Pillow
 deepface
 opencv-python-headless
 tf-keras
+sqlite3
