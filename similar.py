@@ -65,24 +65,22 @@ if img1 and img2:
     image2 = np.array(Image.open(img2))
     
     try:
-        if image1 and image2:
             # Perform face verification using DeepFace
-            result = DeepFace.verify(
-                img1_path=img1pil,
-                img2_path=img2pil,
-                enforce_detection=False,  # Skip face detection if necessary
-                anti_spoofing=True        # Enable anti-spoofing
-            )
+        result = DeepFace.verify(
+            img1_path=img1pil,
+            img2_path=img2pil,
+            enforce_detection=False,  # Skip face detection if necessary
+            anti_spoofing=True        # Enable anti-spoofing
+        )
 
-            # Show the result
-            if result['verified']:
-                st.success("Faces match!")
-            else:
-                st.error("Faces do not match.")
-            st.write(result)  # Output the complete result dictionary
+        # Show the result
+        if result['verified']:
+            st.success("Faces match!")
         else:
-            st.error("Image paths not found in the database.")
-    except ValueError as e:
-        st.error("Spoofing detected!")
-        st.error(e)
-
+            st.error("Faces do not match.")
+        st.write(result)  # Output the complete result dictionary
+    else:
+        st.error("Image paths not found in the database.")
+except ValueError as e:
+    st.error("Spoofing detected!")
+    st.error(e)
