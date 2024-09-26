@@ -42,8 +42,6 @@ img2 = st.file_uploader("Upload Second Image", type=["jpg", "jpeg", "png"])
 
 # Function to save uploaded images and insert their paths into the database
 def save_image(uploaded_file, filename):
-    with open(filename, "wb") as f:
-        f.write(uploaded_file.getbuffer())
     # Insert image path into the database
     c.execute("INSERT INTO images (img_name, img_path) VALUES (?, ?)", (uploaded_file.name, filename))
     conn.commit()
