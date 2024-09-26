@@ -63,7 +63,7 @@ if img1 and img2:
     image2 = np.array(Image.open(img2))
     
     try:
-        if img1_bytes and img2_bytes:
+        if image1 and image2:
             # Perform face verification using DeepFace
             result = DeepFace.verify(
                 img1_path=image1,
