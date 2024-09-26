@@ -68,15 +68,18 @@ if img1 and img2:
     img2_pil.save(img2_bytes, format=img2_pil.format)
 
     # Convert the BytesIO objects back to bytes
-    img1_bytes = img1_bytes.getvalue()
-    img2_bytes = img2_bytes.getvalue()
+    img1_bytes = img1.read()
+    img2_bytes = img2.read()
+
+    image1 = Image.open(io.BytesIO(img1_bytes))
+    image2 = Image.open(io.BytesIO(img2_bytes))
     
     try:
         if img1_bytes and img2_bytes:
             # Perform face verification using DeepFace
             result = DeepFace.verify(
-                img1_path=img1,
-                img2_path=img2,
+                img1_path=image1,
+                img2_path=image2,
                 enforce_detection=False,  # Skip face detection if necessary
                 anti_spoofing=True        # Enable anti-spoofing
             )
