@@ -1,6 +1,6 @@
+streamlit
 streamlit-mic-recorder
 Pillow
 deepface
 opencv-python-headless
 tf-keras
-sqlite3
