@@ -79,8 +79,6 @@ if img1 and img2:
         else:
             st.error("Faces do not match.")
         st.write(result)  # Output the complete result dictionary
-    else:
-        st.error("Image paths not found in the database.")
-except ValueError as e:
-    st.error("Spoofing detected!")
-    st.error(e)
+    except ValueError as e:
+        st.error("Spoofing detected!")
+        st.error(e)
