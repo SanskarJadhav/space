@@ -1,9 +1,44 @@
 import streamlit as st
-from whisper_stt import whisper_stt
+import os
+import whisper
 
-api = st.secrets["OPENAI_API_KEY"]
+def save_uploaded_file(uploaded_file, save_path):
+    with open(os.path.join(save_path, uploaded_file.name), "wb") as f:
+        f.write(uploaded_file.getbuffer())
 
-text = whisper_stt(openai_api_key=api, language = 'en')  
-# If you don't pass an API key, the function will attempt to retrieve it as an environment variable : 'OPENAI_API_KEY'.
-if text:
-    st.write(text)
+def load_whisper_model():
+    model = whisper.load_model("base")
+    return model
+
+model = load_whisper_model()
+
+def transcribe_audio(mp3_filepath):
+    # Transcribe using whisper
+    result = model.transcribe(mp3_filepath)
+    transcription = result['text']
+    return transcription
+
+def main():
+    st.title("Song Transcriber")
+
+    # File uploader widget
+    uploaded_file = st.file_uploader("Upload an audio file", type="mp3")
+
+    if uploaded_file is not None:
+        save_path = "audio_files"  # Folder to save the uploaded file
+        os.makedirs(save_path, exist_ok=True)
+
+        # Display the uploaded file
+        st.audio(uploaded_file, format='audio/mp3')
+
+        # Save the uploaded file
+        save_uploaded_file(uploaded_file, save_path)
+        st.success("Audio file uploaded successfully.")
+        # Transcribe the audio
+        transcribed_text = transcribe_audio(
+            f"audio_files/{uploaded_file.name}")
+        st.subheader("Transcribed Text:")
+        st.text_area("Transcribed Text", value=transcribed_text, height=200)
+
+if __name__ == "__main__":
+    main()
