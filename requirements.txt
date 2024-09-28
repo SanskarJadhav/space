@@ -1,8 +1,6 @@
 streamlit
 streamlit-mic-recorder
+audio-recorder
 Pillow
-deepface
-opencv-python-headless
-tf-keras
 os
 whisper
