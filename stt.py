@@ -1,44 +1,51 @@
 import streamlit as st
+import speech_recognition as sr
+from pydub import AudioSegment
 import os
-import whisper
 
-def save_uploaded_file(uploaded_file, save_path):
-    with open(os.path.join(save_path, uploaded_file.name), "wb") as f:
-        f.write(uploaded_file.getbuffer())
+# Function to convert audio file to WAV (if not in WAV format)
+def convert_to_wav(uploaded_file):
+    audio = AudioSegment.from_file(uploaded_file)
+    wav_filename = "converted.wav"
+    audio.export(wav_filename, format="wav")
+    return wav_filename
 
-def load_whisper_model():
-    model = whisper.load_model("base")
-    return model
+# Function to recognize speech from audio file
+def transcribe_audio(audio_file):
+    recognizer = sr.Recognizer()
+    with sr.AudioFile(audio_file) as source:
+        audio_data = recognizer.record(source)  # Read the entire audio file
+        try:
+            text = recognizer.recognize_sphinx(audio_data)  # Using CMU Sphinx (offline)
+            return text
+        except sr.UnknownValueError:
+            return "Sorry, could not understand the audio."
+        except sr.RequestError as e:
+            return f"Error with speech recognition service; {e}"
 
-model = load_whisper_model()
+# Streamlit app
+st.title("Audio Transcription App")
 
-def transcribe_audio(mp3_filepath):
-    # Transcribe using whisper
-    result = model.transcribe(mp3_filepath)
-    transcription = result['text']
-    return transcription
+uploaded_file = st.file_uploader("Upload an audio file", type=["wav", "mp3", "ogg", "flac"])
 
-def main():
-    st.title("Song Transcriber")
+if uploaded_file is not None:
+    st.audio(uploaded_file, format="audio/wav")
 
-    # File uploader widget
-    uploaded_file = st.file_uploader("Upload an audio file", type="mp3")
+    # Convert the file to WAV format if necessary
+    file_extension = os.path.splitext(uploaded_file.name)[1].lower()
+    if file_extension != ".wav":
+        st.write("Converting audio file to WAV format...")
+        audio_file = convert_to_wav(uploaded_file)
+    else:
+        audio_file = uploaded_file
 
-    if uploaded_file is not None:
-        save_path = "audio_files"  # Folder to save the uploaded file
-        os.makedirs(save_path, exist_ok=True)
+    # Transcribe the audio
+    st.write("Transcribing the audio...")
+    transcription = transcribe_audio(audio_file)
+    
+    # Display the transcription
+    st.subheader("Transcription:")
+    st.write(transcription)
+else:
+    st.write("Please upload an audio file to transcribe.")
 
-        # Display the uploaded file
-        st.audio(uploaded_file, format='audio/mp3')
-
-        # Save the uploaded file
-        save_uploaded_file(uploaded_file, save_path)
-        st.success("Audio file uploaded successfully.")
-        # Transcribe the audio
-        transcribed_text = transcribe_audio(
-            f"audio_files/{uploaded_file.name}")
-        st.subheader("Transcribed Text:")
-        st.text_area("Transcribed Text", value=transcribed_text, height=200)
-
-if __name__ == "__main__":
-    main()
