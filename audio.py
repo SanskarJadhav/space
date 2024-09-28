@@ -19,10 +19,3 @@ if text:
 # Display all received texts
 for t in st.session_state.text_received:
     st.text(t)
-
-# Record voice and play the recorded audio
-st.write("Record your voice, and play the recorded audio:")
-audio = mic_recorder(start_prompt="⏺️", stop_prompt="⏹️", key='recorder')
-
-if audio:
-    st.audio(audio['bytes'])
