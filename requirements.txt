@@ -4,3 +4,5 @@ Pillow
 deepface
 opencv-python-headless
 tf-keras
+os
+whisper
