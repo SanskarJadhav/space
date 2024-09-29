@@ -5,3 +5,4 @@ SpeechRecognition
 pocketsphinx
 audio-recorder-streamlit
 torchaudio 
+speechbrain
