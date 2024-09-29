@@ -18,7 +18,9 @@ audio1 = ar.audio_recorder(key="audio1")
 st.header("Record Second Audio Clip")
 audio2 = ar.audio_recorder(key="audio2")
 
-if audio1 is not None and audio2 is not None:
+verify = st.button("Verify")
+
+if verify:
     # Save audio files temporarily for processing
     with open("audio1.wav", "wb") as f:
         f.write(audio1)
