@@ -13,7 +13,7 @@ st.title("Speaker Recognition with SpeechBrain")
 
 # Record the first audio sample
 st.write("Record your first audio sample:")
-audio_bytes_1 = audio_recorder(pause_threshold=3.0, format="mp3")
+audio_bytes_1 = audio_recorder(pause_threshold=3.0)
 
 if audio_bytes_1:
     # Load audio from MP3 bytes and convert to WAV using pydub
