@@ -1,7 +1,7 @@
 import streamlit as st
 import torchaudio
 from speechbrain.pretrained import SpeakerRecognition
-from streamlit_audio_recorder import audio_recorder
+from audio_recorder_streamlit import audio_recorder
 import io
 from pydub import AudioSegment
 
