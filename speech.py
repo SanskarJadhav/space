@@ -32,9 +32,9 @@ if audio1 is not None and audio2 is not None:
     # Display the result
     st.subheader("Speaker Verification Result")
     if prediction:
-        st.success(f"The audios are from the same speaker. (Score: {score:.4f})")
+        st.success(f"The audios are from the same speaker.")
     else:
-        st.error(f"The audios are from different speakers. (Score: {score:.4f})")
+        st.error(f"The audios are from different speakers.")
 
 else:
     st.write("Please record both audio clips.")
