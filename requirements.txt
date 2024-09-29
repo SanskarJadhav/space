@@ -3,3 +3,6 @@ streamlit-mic-recorder
 pydub
 SpeechRecognition
 pocketsphinx
+streamlit-audio-recorder 
+torchaudio 
+speechbrain
