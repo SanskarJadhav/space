@@ -1,11 +1,9 @@
 import streamlit as st
 import torchaudio
 from speechbrain.pretrained import SpeakerRecognition
-from st_custom_components import st_audiorecorder
-import numpy as np
-import os
+from streamlit_audio_recorder import audio_recorder
 import io
-from scipy.io.wavfile import write
+from pydub import AudioSegment
 
 # Initialize the Speaker Recognition Model from SpeechBrain
 recognizer = SpeakerRecognition.from_hparams(source="speechbrain/spkrec-ecapa-voxceleb", savedir="tmp_model")
@@ -13,21 +11,18 @@ recognizer = SpeakerRecognition.from_hparams(source="speechbrain/spkrec-ecapa-vo
 # Streamlit UI
 st.title("Speaker Recognition with SpeechBrain")
 
-# Record the first audio
+# Record the first audio sample
 st.write("Record your first audio sample:")
-audio_1 = st_audiorecorder()
+audio_bytes_1 = audio_recorder(pause_threshold=3.0, format="mp3")
 
-if audio_1 is not None:
-    # Convert recorded audio to a NumPy array and save as WAV
-    sample_rate = 16000  # Streamlit Audio Recorder uses 16kHz by default
-    audio_1_np = np.frombuffer(audio_1, np.int16)  # Decode raw audio to NumPy
-    audio_1_path = "audio_1.wav"
+if audio_bytes_1:
+    # Load audio from MP3 bytes and convert to WAV using pydub
+    audio_1 = AudioSegment.from_file(io.BytesIO(audio_bytes_1), format="mp3")
+    audio_1_wav = io.BytesIO()
+    audio_1.export(audio_1_wav, format="wav")
     
-    # Save audio to WAV format
-    write(audio_1_path, sample_rate, audio_1_np)
-    
-    # Load audio using torchaudio
-    signal_1, fs_1 = torchaudio.load(audio_1_path)
+    # Load the converted WAV file using torchaudio
+    signal_1, fs_1 = torchaudio.load(audio_1_wav)
     
     # Extract speaker embeddings from the first recording
     embeddings_1 = recognizer.encode_batch(signal_1)
@@ -35,21 +30,20 @@ if audio_1 is not None:
     # Display speaker embedding
     st.write("Speaker Embedding for first audio:", embeddings_1)
     
-    # Allow user to record a second audio sample for comparison
+    # Record the second audio sample for comparison
     st.write("Record a second audio sample for speaker verification:")
-    audio_2 = st_audiorecorder(key="second_audio")
-    
-    if audio_2 is not None:
-        # Convert second recording to NumPy array and save as WAV
-        audio_2_np = np.frombuffer(audio_2, np.int16)
-        audio_2_path = "audio_2.wav"
+    audio_bytes_2 = audio_recorder(pause_threshold=3.0, format="mp3", key="second_audio")
+
+    if audio_bytes_2:
+        # Load second recording from MP3 bytes and convert to WAV
+        audio_2 = AudioSegment.from_file(io.BytesIO(audio_bytes_2), format="mp3")
+        audio_2_wav = io.BytesIO()
+        audio_2.export(audio_2_wav, format="wav")
         
-        write(audio_2_path, sample_rate, audio_2_np)
+        # Load the second audio sample using torchaudio
+        signal_2, fs_2 = torchaudio.load(audio_2_wav)
         
-        # Load second audio using torchaudio
-        signal_2, fs_2 = torchaudio.load(audio_2_path)
-        
-        # Extract embeddings from second recording
+        # Extract embeddings from the second recording
         embeddings_2 = recognizer.encode_batch(signal_2)
         
         # Perform speaker verification between the two recordings
@@ -58,9 +52,3 @@ if audio_1 is not None:
         # Display the similarity score and the decision
         st.write("Speaker Similarity Score:", score.item())
         st.write("Are the speakers the same?", "Yes" if decision else "No")
-
-# Clean up temp files if needed
-if os.path.exists("audio_1.wav"):
-    os.remove("audio_1.wav")
-if os.path.exists("audio_2.wav"):
-    os.remove("audio_2.wav")
