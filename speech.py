@@ -12,11 +12,11 @@ st.title("Speaker Recognition App")
 
 # Record the first audio clip
 st.header("Record First Audio Clip")
-audio1 = ar.audio_recorder()
+audio1 = ar.audio_recorder(key="audio1")
 
 # Record the second audio clip
 st.header("Record Second Audio Clip")
-audio2 = ar.audio_recorder()
+audio2 = ar.audio_recorder(key="audio2")
 
 if audio1 is not None and audio2 is not None:
     # Save audio files temporarily for processing
