@@ -2,6 +2,7 @@ import streamlit as st
 import speech_recognition as sr
 from pydub import AudioSegment
 import os
+from audio_recorder_streamlit import audio_recorder
 
 # Function to convert audio file to WAV (if not in WAV format)
 def convert_to_wav(uploaded_file):
@@ -25,23 +26,20 @@ def transcribe_audio(audio_file):
 
 # Streamlit app
 st.title("Audio Transcription App")
+audio = audio_recorder(sample_rate=41_000)
 
-uploaded_file = st.file_uploader("Upload an audio file", type=["wav", "mp3", "ogg", "flac"])
+if audio:
+    st.audio(audio, format="audio/wav")
+    if st.button("Use this Voice Recording"):
+        voice_register(audio)
 
-if uploaded_file is not None:
-    st.audio(uploaded_file, format="audio/wav")
-
-    # Convert the file to WAV format if necessary
-    file_extension = os.path.splitext(uploaded_file.name)[1].lower()
-    if file_extension != ".wav":
-        st.write("Converting audio file to WAV format...")
-        audio_file = convert_to_wav(uploaded_file)
-    else:
-        audio_file = uploaded_file
+def voice_register(audio):
+     with open("audio2.wav", "wb") as f:
+        f.write(audio)
 
     # Transcribe the audio
     st.write("Transcribing the audio...")
-    transcription = transcribe_audio(audio_file)
+    transcription = transcribe_audio("audio2.wav")
     
     # Display the transcription
     st.subheader("Transcription:")
