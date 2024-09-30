@@ -26,13 +26,11 @@ def transcribe_audio(audio_file):
 
 
 def voice_register(audio):
-     with open("audio2.wav", "wb") as f:
+    with open("audio2.wav", "wb") as f:
         f.write(audio)
-
     # Transcribe the audio
     st.write("Transcribing the audio...")
     transcription = transcribe_audio("audio2.wav")
-    
     # Display the transcription
     st.subheader("Transcription:")
     st.write(transcription)
