@@ -24,14 +24,6 @@ def transcribe_audio(audio_file):
         except sr.RequestError as e:
             return f"Error with speech recognition service; {e}"
 
-# Streamlit app
-st.title("Audio Transcription App")
-audio = audio_recorder(sample_rate=41_000)
-
-if audio:
-    st.audio(audio, format="audio/wav")
-    if st.button("Use this Voice Recording"):
-        voice_register(audio)
 
 def voice_register(audio):
      with open("audio2.wav", "wb") as f:
@@ -44,6 +36,16 @@ def voice_register(audio):
     # Display the transcription
     st.subheader("Transcription:")
     st.write(transcription)
-else:
-    st.write("Please upload an audio file to transcribe.")
+
+# Streamlit app
+st.title("Audio Transcription App")
+audio = audio_recorder(sample_rate=41_000)
+
+if audio:
+    st.audio(audio, format="audio/wav")
+    if st.button("Use this Voice Recording"):
+        voice_register(audio)
+    else:
+        st.write("Please upload an audio file to transcribe.")
+
 
